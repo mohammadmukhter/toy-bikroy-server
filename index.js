@@ -38,9 +38,19 @@ async function run() {
         res.send(result)
     });
 
+    // get all the toys data api
     app.get("/toys", async(req, res)=> {
         const toysData = await toyCollection.find().toArray();
         res.send(toysData)
+    })
+
+    // data get by email query api
+    app.get("/myToys", async (req, res)=> {
+        const queryEmail = req.query.email;
+        console.log(queryEmail)
+        const filter = { sellerEmail: queryEmail}
+        const result = await toyCollection.find(filter).toArray();
+        res.send(result);
     })
 
 
