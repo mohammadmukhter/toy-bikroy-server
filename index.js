@@ -33,25 +33,34 @@ async function run() {
     // toy insert data
     app.post("/toys", async(req, res)=> {
         const toyData = req.body;
-        console.log(toyData);
         const result = await toyCollection.insertOne(toyData)
         res.send(result)
     });
 
     // get all the toys data api
     app.get("/toys", async(req, res)=> {
-        const toysData = await toyCollection.find().toArray();
+        const toysData = await toyCollection.find().limit(20).toArray();
         res.send(toysData)
     })
 
     // data get by email query api
     app.get("/myToys", async (req, res)=> {
         const queryEmail = req.query.email;
-        console.log(queryEmail)
         const filter = { sellerEmail: queryEmail}
         const result = await toyCollection.find(filter).toArray();
         res.send(result);
-    })
+    });
+
+    // data get by sub_category query api
+    app.get("/subCategory", async (req, res)=> {
+        const querySubCategory = req.query.subCategory;
+        console.log(querySubCategory);
+
+        const filter = { toyCategory: querySubCategory}
+        console.log(filter)
+        const result = await toyCollection.find(filter).toArray();
+        res.send(result);
+    });
 
 
 
