@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -51,16 +51,24 @@ async function run() {
         res.send(result);
     });
 
-    // data get by sub_category query api
-    app.get("/subCategory", async (req, res)=> {
-        const querySubCategory = req.query.subCategory;
-        console.log(querySubCategory);
-
-        const filter = { toyCategory: querySubCategory}
-        console.log(filter)
+    // data get by _id query api
+    app.get("/toyDetails/:id", async (req, res)=> {
+        const id =req.params.id;
+        const filter = { _id: new ObjectId(id)}
         const result = await toyCollection.find(filter).toArray();
         res.send(result);
     });
+
+    // data get by sub_category query api
+    // app.get("/subCategory", async (req, res)=> {
+    //     const querySubCategory = req.query.subCategory;
+    //     console.log(querySubCategory);
+
+    //     const filter = { toyCategory: querySubCategory}
+    //     console.log(filter)
+    //     const result = await toyCollection.find(filter).toArray();
+    //     res.send(result);
+    // });
 
 
 
