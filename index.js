@@ -29,6 +29,11 @@ async function run() {
 
     const toyCollection = client.db('toyBikroy').collection('toys');
    
+    // get all the toys data api
+    app.get("/toys", async(req, res)=> {
+        const toysData = await toyCollection.find().limit(20).toArray();
+        res.send(toysData)
+    });
 
     // toy insert data
     app.post("/toys", async(req, res)=> {
@@ -37,11 +42,7 @@ async function run() {
         res.send(result)
     });
 
-    // get all the toys data api
-    app.get("/toys", async(req, res)=> {
-        const toysData = await toyCollection.find().limit(20).toArray();
-        res.send(toysData)
-    })
+    
 
     // data get by email query api
     app.get("/myToys", async (req, res)=> {
