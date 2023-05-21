@@ -5,8 +5,13 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+const corsConfig = {
+    origin: '*',
+    Credentials: true,
+    method: ["GET", "POST", "PUT","PATCH", "DELETE"]
+}
 // All the middleware
-app.use(cors())
+app.use(cors(corsConfig))
 app.use(express.json());
 
 
@@ -25,7 +30,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const toyCollection = client.db('toyBikroy').collection('toys');
    
@@ -58,6 +63,25 @@ async function run() {
         const filter = { _id: new ObjectId(id)}
         const result = await toyCollection.find(filter).toArray();
         res.send(result);
+    });
+
+    // data update by _id query api
+    app.patch("/updateToy/:id", async (req, res)=> {
+        const id =req.params.id;
+        const data = req.body;
+        const filter = { _id: new ObjectId(id)}
+
+        console.log(data)
+        const updateToyData = {
+            $set: {
+                toyPrice: data.toyPrice,
+                availableQuantity: data.availableQuantity,
+                toyDetails: data.toyDetails,
+            },
+          };
+
+        const result = await toyCollection.updateOne(filter, updateToyData);
+        res.send(data);
     });
 
     // data get by sub_category query api
