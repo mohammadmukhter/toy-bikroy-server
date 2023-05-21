@@ -61,9 +61,9 @@ async function run() {
     app.get("/myToys", async (req, res)=> {
         const queryEmail = req.query.email;
         const filterMethod = req.query.filter;
-        console.log(parseInt(filterMethod))
         
-        let filterProcess={ toyPrice: parseInt(filterMethod)}
+        
+        let filterProcess= filterMethod ? { toyPrice: parseInt(filterMethod)}: {};
        
         const queryByEmail = { sellerEmail: queryEmail}
         const result = await toyCollection.find(queryByEmail).sort(filterProcess).toArray();
