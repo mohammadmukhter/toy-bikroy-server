@@ -60,10 +60,17 @@ async function run() {
     // data get by email query api
     app.get("/myToys", async (req, res)=> {
         const queryEmail = req.query.email;
-        const filter = { sellerEmail: queryEmail}
-        const result = await toyCollection.find(filter).toArray();
+        const filterMethod = req.query.filter;
+        console.log(parseInt(filterMethod))
+        
+        let filterProcess={ toyPrice: parseInt(filterMethod)}
+       
+        const queryByEmail = { sellerEmail: queryEmail}
+        const result = await toyCollection.find(queryByEmail).sort(filterProcess).toArray();
         res.send(result);
     });
+
+
 
     // data get by _id query api
     app.get("/toyDetails/:id", async (req, res)=> {
