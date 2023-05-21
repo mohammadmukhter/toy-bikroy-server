@@ -40,6 +40,14 @@ async function run() {
         res.send(toysData)
     });
 
+    // data get by _id query api
+    app.get("/toys/:toyName", async (req, res)=> {
+        const sToyName =req.params.toyName;
+        const filter = { toyName: sToyName}
+        const result = await toyCollection.find(filter).toArray();
+        res.send(result);
+    });
+
     // toy insert data
     app.post("/toys", async(req, res)=> {
         const toyData = req.body;
