@@ -84,6 +84,15 @@ async function run() {
         res.send(data);
     });
 
+      // data delete by _id query api
+      app.delete("/myToys/:id", async (req, res)=> {
+        const id =req.params.id;
+        const filter = { _id: new ObjectId(id)}
+        const result = await toyCollection.deleteOne(filter);
+        res.send(result);
+    });
+
+
     // data get by sub_category query api
     // app.get("/subCategory", async (req, res)=> {
     //     const querySubCategory = req.query.subCategory;
